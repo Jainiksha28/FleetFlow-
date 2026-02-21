@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Maintenance & Service Logs</title>
+    <link rel="stylesheet" href="{% static 'Maintenance.css'%}">
+</head>
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+            <div class="brand">🚛 <span>FleetFlow</span></div>
+            <nav class="nav">
+                <a href="Dashboard.html" class="nav-item" data-target="dashboard">Dashboard</a>
+                <a href="vehicle-registry.html" class="nav-item" data-target="vehicle">Vehicle Registry</a>
+                <a href="Tripmanagement.html" class="nav-item" data-target="trip">Trip Dispatcher</a>
+                <a href="#" class="nav-item active" data-target="maintenance">Maintenance</a>
+                <a href="trip-expense.html" class="nav-item" data-target="expense">Trip & Expense</a>
+                <a href="performance.html" class="nav-item" data-target="performance">Performance</a>
+                <a href="analytics.html" class="nav-item" data-target="analytics">Analytics</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user">
+                    <div class="avatar">JD</div>
+                    <div class="uinfo">
+                        <div class="name">John Doe</div>
+                        <div class="role">Manager</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    <h2 class="section-title">Maintenance & Service Logs</h2>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Fleet Flow</h3>
+            <button class="create-btn" onclick="openModal()">Create New Service</button>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="searchInput" placeholder="Search...">
+
+            <button id="groupBtn">Group by Status</button>
+            <button id="filterBtn">Filter In-Shop</button>
+            <button id="sortBtn">Sort by Date</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Log ID</th>
+                        <th>Vehicle</th>
+                        <th>Issue/Service</th>
+                        <th>Date</th>
+                        <th>Cost</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+
+                    <tr>
+                        <td>321</td>
+                        <td>TATA</td>
+                        <td>Engine Issue</td>
+                        <td>2026-02-20</td>
+                        <td>5000</td>
+                        <td><span class="status in-shop">In Shop</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>322</td>
+                        <td>Mahindra</td>
+                        <td>Oil Change</td>
+                        <td>2026-01-15</td>
+                        <td>2000</td>
+                        <td><span class="status completed">Completed</span></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+    <div class="modal">
+        <h3>New Service</h3>
+
+        <label>Vehicle Name</label>
+        <input type="text" id="vehicleInput">
+
+        <label>Issue</label>
+        <input type="text" id="issueInput">
+
+        <label>Date</label>
+        <input type="date" id="dateInput">
+
+        <label>Cost</label>
+        <input type="number" id="costInput">
+
+        <div class="modal-buttons">
+            <button class="create" onclick="addService()">Create</button>
+            <button class="cancel" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+// Modal functions
+function openModal(){
+    document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display = "none";
+}
+
+// Add New Service
+function addService(){
+
+    const vehicle = document.getElementById("vehicleInput").value;
+    const issue = document.getElementById("issueInput").value;
+    const date = document.getElementById("dateInput").value;
+    const cost = document.getElementById("costInput").value;
+
+    if(!vehicle || !issue || !date || !cost){
+        alert("Please fill all fields");
+        return;
+    }
+
+    const tableBody = document.getElementById("tableBody");
+
+    const newRow = document.createElement("tr");
+
+    newRow.innerHTML = `
+        <td>${Math.floor(Math.random()*1000)}</td>
+        <td>${vehicle}</td>
+        <td>${issue}</td>
+        <td>${date}</td>
+        <td>${cost}</td>
+        <td><span class="status in-shop">In Shop</span></td>
+    `;
+
+    tableBody.appendChild(newRow);
+
+    closeModal();
+}
+
+// Search
+document.getElementById("searchInput").addEventListener("keyup", function() {
+
+    const value = this.value.toLowerCase();
+    const rows = document.querySelectorAll("#tableBody tr");
+
+    rows.forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+    });
+});
+
+// Filter In Shop
+document.getElementById("filterBtn").addEventListener("click", function() {
+
+    const rows = document.querySelectorAll("#tableBody tr");
+
+    rows.forEach(row => {
+        const status = row.querySelector(".status").innerText;
+        row.style.display = (status === "In Shop") ? "" : "none";
+    });
+});
+
+// Sort by Date
+document.getElementById("sortBtn").addEventListener("click", function() {
+
+    const tableBody = document.getElementById("tableBody");
+    const rows = Array.from(tableBody.querySelectorAll("tr"));
+
+    rows.sort((a, b) => {
+        return new Date(a.children[3].innerText) - new Date(b.children[3].innerText);
+    });
+
+    rows.forEach(row => tableBody.appendChild(row));
+});
+
+// Reset
+document.getElementById("resetBtn").addEventListener("click", function() {
+    const rows = document.querySelectorAll("#tableBody tr");
+    rows.forEach(row => row.style.display = "");
+});
+
+</script>
+
+</body>
+</html>
