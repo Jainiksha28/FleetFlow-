@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>FleetFlow • Manager Dashboard</title>
+
+    <!-- Chart.js CDN (must be present) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="Dashboard.css" />
+</head>
+
+<body>
+    <div class="app">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="brand">🚛 <span>FleetFlow</span></div>
+            <nav class="nav">
+                <a href="#" class="nav-item active" data-target="dashboard">Dashboard</a>
+                <a href="vehicle-registry.html" class="nav-item" data-target="vehicle">Vehicle Registry</a>
+                <a href="trip-dispatcher.html" class="nav-item" data-target="trip">Trip Dispatcher</a>
+                <a href="maintenance.html" class="nav-item" data-target="maintenance">Maintenance</a>
+                <a href="trip-expense.html" class="nav-item" data-target="expense">Trip & Expense</a>
+                <a href="performance.html" class="nav-item" data-target="performance">Performance</a>
+                <a href="analytics.html" class="nav-item" data-target="analytics">Analytics</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user">
+                    <div class="avatar">JD</div>
+                    <div class="uinfo">
+                        <div class="name">John Doe</div>
+                        <div class="role">Manager</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <h1>Main Dashboard</h1>
+                    <p class="muted">Real-time fleet overview & operational analytics</p>
+                </div>
+
+                <div class="top-actions">
+                    <div class="notif-wrap">
+                        <button id="notifBtn" class="icon-btn">🔔 <span id="notifBadge"
+                                class="badge hidden">0</span></button>
+                        <div id="notifDropdown" class="notif-dropdown hidden">
+                            <div class="nd-head">
+                                <strong>Notifications</strong>
+                                <button id="markAllRead" class="small-link">Mark all read</button>
+                            </div>
+                            <ul id="notifList" class="notif-list"></ul>
+                            <div class="nd-foot"><button id="clearNotif" class="btn-ghost">Clear</button></div>
+                        </div>
+                    </div>
+
+                    <div class="date-wrap">
+                        <label class="small muted">Date</label>
+                        <input id="datePicker" type="date" />
+                        <button id="clearDate" class="icon-btn" title="Clear date">✖</button>
+                    </div>
+                </div>
+            </header>
+
+            <section class="kpi-grid">
+                <div class="kpi">
+                    <div class="kpi-title">Active Fleet</div>
+                    <div class="kpi-value" id="activeFleet">0</div>
+                    <div class="kpi-sub">Vehicles currently on trip / busy</div>
+                </div>
+
+                <div class="kpi">
+                    <div class="kpi-title">Maintenance Alerts</div>
+                    <div class="kpi-value" id="maintCount">0</div>
+                    <div class="kpi-sub">Vehicles in shop</div>
+                </div>
+
+                <div class="kpi">
+                    <div class="kpi-title">Pending Cargo</div>
+                    <div class="kpi-value" id="pendingCargo">0</div>
+                    <div class="kpi-sub">Shipments waiting assignment</div>
+                </div>
+
+                <div class="kpi">
+                    <div class="kpi-title">Utilization Rate</div>
+                    <div class="kpi-value" id="utilRate">0</div>
+                    <div class="kpi-sub">Active / Total Fleet</div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="panel-head">
+                    <h2>Live Fleet Overview</h2>
+                    <div class="controls">
+                        <input id="searchBar" placeholder="Search vehicle / driver / route / cargo" />
+                        <select id="statusFilter">
+                            <option value="">All status</option>
+                            <option>On Trip</option>
+                            <option>Available</option>
+                            <option>Busy</option>
+                            <option>In Shop</option>
+                            <option>Retired</option>
+                        </select>
+                        <!-- <button id="openMaint" class="btn-ghost">Maintenance Charts</button> -->
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="fleet-table">
+                        <thead>
+                            <tr>
+                                <th>Trip ID</th>
+                                <th>Vehicle</th>
+                                <th>Driver</th>
+                                <th>Route</th>
+                                <th>Cargo</th>
+                                <th>Status</th>
+                                <th>Updated at</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MAINTENANCE MODAL -->
+    <div id="maintModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-top">
+                <h3>Maintenance — Monthly & Yearly</h3>
+                <button id="closeMaint" class="icon-btn">✖</button>
+            </div>
+
+            <div class="charts">
+                <div class="chart-card">
+                    <h4>Monthly (this year)</h4>
+                    <canvas id="monthlyChart" height="220"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h4>Yearly</h4>
+                    <canvas id="yearlyChart" height="220"></canvas>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button id="exportExpenses" class="btn-primary">Export CSV</button>
+                <button id="closeMaint2" class="btn-ghost">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="Dashboard.js"></script>
+</body>
+
+</html>
