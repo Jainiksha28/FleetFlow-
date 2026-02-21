@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense & Fuel Logging</title>
+    <link rel="stylesheet" href="{% static 'Trip-expense.css'%}">
+</head>
+<body>
+
+<div class="container">
+    <button class="hamburger" id="hamburger">&#9776;</button>
+    <aside class="sidebar">
+            <div class="brand">🚛 <span>FleetFlow</span></div>
+            <nav class="nav">
+                <a href="Dashboard.html" class="nav-item" data-target="dashboard">Dashboard</a>
+                <a href="Vehicle.html" class="nav-item" data-target="vehicle">Vehicle Registry</a>
+                <a href="Tripmanagement.html" class="nav-item" data-target="trip">Trip Dispatcher</a>
+                <a href="Maintenance.html" class="nav-item" data-target="maintenance">Maintenance</a>
+                <a href="#" class="nav-item active" data-target="expense">Trip & Expense</a>
+                <a href="performance.html" class="nav-item" data-target="performance">Performance</a>
+                <a href="analytics.html" class="nav-item" data-target="analytics">Analytics</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user">
+                    <div class="avatar">JD</div>
+                    <div class="uinfo">
+                        <div class="name">John Doe</div>
+                        <div class="role">Manager</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    <h2>Expense & Fuel Logging</h2>
+
+    <div class="card">
+
+        <div class="header">
+            <h3>Fleet Flow</h3>
+            <button class="add-btn" onclick="openModal()">Add Expense</button>
+        </div>
+
+        <div class="controls">
+            <select id="groupSelect">
+                <option value="all">Group By Vehicle</option>
+                <option value="Van">Van</option>
+                <option value="Truck">Truck</option>
+                <option value="Bike">Bike</option>
+            </select>
+
+            <select id="filterSelect">
+                <option value="all">Filter</option>
+                <option value="high">High Cost (>5000)</option>
+                <option value="low">Low Cost (<5000)</option>
+            </select>
+
+            <select id="sortSelect">
+                <option value="none">Sort By</option>
+                <option value="distance">Distance</option>
+                <option value="total">Total Cost</option>
+            </select>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Trip ID</th>
+                        <th>Driver</th>
+                        <th>Vehicle</th>
+                        <th>Type</th>
+                        <th>Distance (km)</th>
+                        <th>Fuel Cost</th>
+                        <th>Other Expense</th>
+                        <th>Total Cost</th>
+                    </tr>
+                </thead>
+                <tbody id="expenseTable"></tbody>
+            </table>
+        </div>
+
+        <div class="summary">
+            <h4>Total Fleet Cost: ₹ <span id="fleetTotal">0</span></h4>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+    <div class="modal">
+        <h3>Add Expense</h3>
+
+        <input type="text" id="tripId" placeholder="Trip ID">
+        <input type="text" id="driverName" placeholder="Driver Name">
+        <input type="text" id="vehiclePlate" placeholder="Vehicle Number Plate">
+
+        <select id="vehicleType">
+            <option value="Van">Van</option>
+            <option value="Truck">Truck</option>
+            <option value="Bike">Bike</option>
+        </select>
+
+        <input type="number" id="distance" placeholder="Distance Covered (km)">
+        <input type="number" id="fuelCost" placeholder="Fuel Cost">
+        <input type="number" id="otherExpense" placeholder="Other Expense">
+
+        <div class="modal-buttons">
+            <button class="create" onclick="addExpense()">Add</button>
+            <button class="cancel" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+   
+const hamburger = document.querySelector(".hamburger");
+const sidebar = document.querySelector(".sidebar");
+
+hamburger.addEventListener("click", function () {
+    sidebar.classList.toggle("active");
+});
+
+let expenses = [];
+
+function openModal(){
+    document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display = "none";
+}
+
+function addExpense(){
+
+    const tripId = tripIdInput.value;
+    const driver = driverName.value;
+    const plate = vehiclePlate.value;
+    const type = vehicleType.value;
+    const distance = Number(distanceInput.value);
+    const fuel = Number(fuelCost.value);
+    const other = Number(otherExpense.value);
+
+    if(!tripId || !driver || !plate || !distance){
+        alert("Fill all fields");
+        return;
+    }
+
+    const total = fuel + other;
+
+    expenses.push({tripId, driver, plate, type, distance, fuel, other, total});
+
+    renderTable();
+    closeModal();
+}
+
+function renderTable(){
+
+    const tbody = document.getElementById("expenseTable");
+    tbody.innerHTML = "";
+
+    let filtered = [...expenses];
+
+    // Group
+    const group = groupSelect.value;
+    if(group !== "all"){
+        filtered = filtered.filter(e => e.type === group);
+    }
+
+    // Filter
+    const filter = filterSelect.value;
+    if(filter === "high"){
+        filtered = filtered.filter(e => e.total > 5000);
+    }
+    if(filter === "low"){
+        filtered = filtered.filter(e => e.total < 5000);
+    }
+
+    // Sort
+    const sort = sortSelect.value;
+    if(sort === "distance"){
+        filtered.sort((a,b) => a.distance - b.distance);
+    }
+    if(sort === "total"){
+        filtered.sort((a,b) => a.total - b.total);
+    }
+
+    let fleetTotal = 0;
+
+    filtered.forEach(e => {
+
+        fleetTotal += e.total;
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${e.tripId}</td>
+                <td>${e.driver}</td>
+                <td>${e.plate}</td>
+                <td>${e.type}</td>
+                <td>${e.distance}</td>
+                <td>${e.fuel}</td>
+                <td>${e.other}</td>
+                <td>${e.total}</td>
+            </tr>
+        `;
+    });
+
+    document.getElementById("fleetTotal").innerText = fleetTotal;
+}
+
+groupSelect.addEventListener("change", renderTable);
+filterSelect.addEventListener("change", renderTable);
+sortSelect.addEventListener("change", renderTable);
+
+
+</script>
+
+</body>
+</html>
