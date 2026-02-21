@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from .models import Userprofile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
 
 
 from django.contrib.auth.decorators import login_required
@@ -62,15 +63,16 @@ def login_view(request):
         if user is not None:
             login(request, user)
 
+
             # Role-based redirect
             role = user.userprofile.role
 
             if role == "manager":
                 return redirect('Dashboard')
             elif role == "dispatcher":
-                return redirect('Dashboard')
+                return redirect('Tripmanagement')
             else:
-                return redirect('driver_dashboard')
+                return redirect('index')
 
         else:
             messages.error(request, "Invalid credentials")
@@ -80,10 +82,55 @@ def login_view(request):
 
 
 
-@login_required
 def manager_dashboard(request):
     if request.user.userprofile.role != "manager":
         return redirect('index')
     return render(request, 'ffm/Dashboard.html')
+
+def trip_manager(request):
+    if request.user.userprofile.role != "dispatcher":
+        return redirect('index')
+    return render(request, 'ffm/Tripmanagement.html')
+
+
+def vehicle(request):
+    return render(request, "ffm/Vehicle.html")
+
+
+
+
+def Maintenance(request):
+    return render(request, "ffm/Maintenance.html")
+
+
+
+def Trip_expense(request):
+    return render(request, "ffm/Trip_expense.html")
+
+
+
+def analytics(request):
+    return render(request, "ffm/analytics.html")
+
+
+
+def driver(request):
+    return render(request, "ffm/driver.html")
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
 
 

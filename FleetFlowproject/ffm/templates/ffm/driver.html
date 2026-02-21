@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FleetFlow | Driver Performance & Safety</title>
+    <link rel="stylesheet" href="{% static 'driver.css'%}">
+</head>
+<body>
+
+<!-- ========== SIDEBAR NAVIGATION ========== -->
+<aside class="sidebar">
+  <div class="brand">FleetFlow</div>
+  <nav>
+    <ul>
+      <li><a href="{% url 'Dashboard' %}">📊 Dashboard</a></li>
+      <li><a href="{% url 'Vehicle' %}">🚚 Vehicle Registry</a></li>
+  
+      <li><a href="{% url 'Maintenance' %}">🛠 Maintenance</a></li>
+      <li><a href="{% url 'analytics' %}">📈 Analytics</a></li>
+      <li><a href="{% url 'driver' %}" class="active">👷 Drivers</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="main">
+  <header class="topbar">
+    <h1>👷 Driver Performance & Safety Profiles</h1>
+    <p>Monitor driver compliance, license validity, and performance metrics</p>
+  </header>
+
+  <main>
+    <table id="driverTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>License Expiry</th>
+          <th>Completion Rate</th>
+          <th>Safety Score</th>
+          <th>Status</th>
+          <th>Assignment</th>
+        </tr>
+      </thead>
+      <tbody id="driverBody">
+        <!-- Populated by driver.js -->
+      </tbody>
+    </table>
+  </main>
+</div>
+
+<script src="{% static 'driver.js' %}"></script>
+</body>
+</html>
