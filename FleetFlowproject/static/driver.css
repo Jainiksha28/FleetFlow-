@@ -1,4 +1,9 @@
-/* Sidebar */
+:root {
+    --purple: #4f46e5;
+    --muted: #6b7280;
+    --card: #fff;
+    --bg: #f7fbff
+}/* Sidebar */
 .sidebar {
   position: fixed;
   left: 0;

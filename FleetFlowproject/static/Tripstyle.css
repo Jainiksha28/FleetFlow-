@@ -7,7 +7,12 @@ body {
 .container {
     padding: 30px;
 }
-
+:root {
+    --purple: #4f46e5;
+    --muted: #6b7280;
+    --card: #fff;
+    --bg: #f7fbff
+}
 /* SIDEBAR */
 .sidebar {
     width: 240px;
@@ -96,6 +101,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 0px;
 }
 
 .primary-btn {
