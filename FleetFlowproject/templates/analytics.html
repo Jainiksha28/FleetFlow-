@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FleetFlow - Operational Analytics</title>
+
+  <link rel="stylesheet" href="{% static 'analytic.css' %}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>📊 Operational Analytics & Financial Reports</h1>
+    <p>Data-driven insights for better fleet decisions</p>
+  </header>
+
+  <section class="metrics">
+    <div class="metric-card">
+      <h3>Fuel Efficiency</h3>
+      <p id="fuelEfficiency">{{ fuel_efficiency|default:"—" }}</p>
+      <small>km / L</small>
+    </div>
+    <div class="metric-card">
+      <h3>Vehicle ROI</h3>
+      <p id="roi">{{ roi|default:"—" }}</p>
+      <small>(Revenue − (Maintenance + Fuel)) / Acquisition</small>
+    </div>
+    <div class="metric-card">
+      <h3>Net Profit</h3>
+      <p id="profit">{{ profit|default:"—" }}</p>
+      <small>Overall earnings summary</small>
+    </div>
+  </section>
+
+  <section class="chart-section">
+    <canvas id="financeTrend" height="160"></canvas>
+    <canvas id="fuelChart" height="160"></canvas>
+  </section>
+
+  <h2>💰 Financial Summary</h2>
+  <table id="financialTable">
+    <thead>
+      <tr>
+        <th>Revenue</th>
+        <th>Fuel Cost</th>
+        <th>Maintenance</th>
+        <th>Acquisition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td id="rev">₹{{ revenue|default:"0" }}</td>
+        <td id="fuelCost">₹{{ fuel_cost|default:"0" }}</td>
+        <td id="maint">₹{{ maintenance|default:"0" }}</td>
+        <td id="acq">₹{{ acquisition|default:"0" }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="export-buttons">
+    <button id="csvBtn">📄 Export CSV</button>
+    <button id="pdfBtn">📑 Export PDF</button>
+  </div>
+
+  <footer>© 2026 FleetFlow Analytics System</footer>
+
+  <script src="{% static 'analytic.js' %}"></script>
+</body>
+</html>

@@ -56,3 +56,60 @@ def login_view(request):
             return redirect('login')
 
     return render(request, 'login.html')
+
+
+
+
+    from django.http import JsonResponse
+from .models import Driver
+
+# def driver_list(request):
+#     data = [{
+#         "id": d.id,
+#         "name": d.name,
+#         "licenseExpiry": d.license_expiry.strftime("%Y-%m-%d"),
+#         "completionRate": d.completion_rate,
+#         "safetyScore": d.safety_score,
+#         "status": d.status,
+#         "assigned": d.assigned,
+#         "expired": d.expired
+#     } for d in Driver.objects.all()]
+#     return JsonResponse(data, safe=False)
+
+# def toggle_status(request, driver_id):
+#     try:
+#         d = Driver.objects.get(id=driver_id)
+#         d.status = "Off Duty" if d.status == "On Duty" else "Suspended" if d.status == "Off Duty" else "On Duty"
+#         d.save()
+#         return JsonResponse({"success": True, "new_status": d.status})
+#     except Driver.DoesNotExist:
+#         return JsonResponse({"success": False})
+
+
+
+
+#         from django.shortcuts import render
+
+# def analytics_dashboard(request):
+#     # Mock data (in real case, fetch from database)
+#     revenue = 185000
+#     fuel_cost = 40000
+#     maintenance = 25000
+#     acquisition = 100000
+#     distance = 50000  # km
+#     fuel_used = 3200  # liters
+
+#     fuel_efficiency = round(distance / fuel_used, 2)
+#     roi = round(((revenue - (maintenance + fuel_cost)) / acquisition) * 100, 2)
+#     profit = revenue - (fuel_cost + maintenance + acquisition)
+
+#     context = {
+#         "revenue": revenue,
+#         "fuel_cost": fuel_cost,
+#         "maintenance": maintenance,
+#         "acquisition": acquisition,
+#         "fuel_efficiency": fuel_efficiency,
+#         "roi": roi,
+#         "profit": f"₹{profit:,}"
+#     }
+#     return render(request, "analytics.html", context)
