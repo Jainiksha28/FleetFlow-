@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FleetFlow | Vehicle Management</title>
+    <link rel="stylesheet" href="{% static 'Vehiclestyle.css'%}">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"> -->
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="add-vehicle-wrapper">
+            <!-- <button class="add-vehicle-btn">+ Add Vehicle</button> -->
+            <button class="add-vehicle-btn" onclick="openAddModal()">+ Add Vehicle</button>
+        </div>
+        <!-- Add Vehicle Details portion -->
+        <div class="modal-overlay" id="vehicleModal">
+            <div class="modal">
+
+                <span class="close-btn" onclick="closeModal()">✕</span>
+
+                <h2 id="modalTitle">Add New Vehicle</h2>
+                <p>Enter the vehicle information below.</p>
+
+                <form id="vehicleForm">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Model Number *</label>
+                            <input type="text" id="model">
+                        </div>
+
+                        <div class="form-group">
+                            <label>License Plate *</label>
+                            <input type="text" id="plate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Vehicle Type *</label>
+                        <select id="type">
+                            <option>Truck</option>
+                            <option>Van</option>
+                            <option>Bike</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Max Capacity (kg) *</label>
+                            <input type="number" id="capacity">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Odometer Reading (km) *</label>
+                            <input type="number" id="odo">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            Add Vehicle
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <!-- ===== TOP CARDS ===== -->
+        <div class="cards">
+
+            <div class="card">
+                <div>
+                    <h4>Total Vehicles</h4>
+                    <h2>4</h2>
+                    <p>Active in fleet</p>
+                </div>
+            </div>
+
+            <div class="card blue">
+                <h4>Trucks</h4>
+                <h2>2</h2>
+            </div>
+
+            <div class="card green">
+                <h4>Vans</h4>
+                <h2>1</h2>
+            </div>
+
+            <div class="card purple">
+                <h4>Bikes</h4>
+                <h2>1</h2>
+            </div>
+
+
+        </div>
+
+
+        <!-- ===== SEARCH SECTION ===== -->
+        <div class="search-bar">
+            <input type="text" placeholder="Search by model or license plate...">
+            <select>
+                <option>All Vehicles</option>
+                <option>Truck</option>
+                <option>Van</option>
+                <option>Bike</option>
+            </select>
+        </div>
+
+
+        <!-- ===== TABLE ===== -->
+        <div class="table-container">
+            <p class="showing">Showing 4 of 4 vehicles</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model Number</th>
+                        <th>License Plate</th>
+                        <th>Type</th>
+                        <th>Capacity</th>
+                        <th>Odometer</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Toyota Hilux 2024</td>
+                        <td>MH-12-AB-1234</td>
+                        <td><span class="badge truck">Truck</span></td>
+                        <td>1,500 kg</td>
+                        <td>45,000 km</td>
+                        <td>
+                            <button class="edit" onclick="openEditModal(this)">Edit</button>
+                            <button class="delete">Delete</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Honda Activa 6G</td>
+                        <td>MH-14-CD-5678</td>
+                        <td><span class="badge bike">Bike</span></td>
+                        <td>150 kg</td>
+                        <td>12,000 km</td>
+                        <td>
+                            <button class="edit" onclick="openEditModal(this)">Edit</button>
+                            <button class="delete">Delete</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Mercedes Sprinter 2023</td>
+                        <td>MH-01-EF-9012</td>
+                        <td><span class="badge van">Van</span></td>
+                        <td>2,000 kg</td>
+                        <td>38,500 km</td>
+                        <td>
+                            <button class="edit" onclick="openEditModal(this)">Edit</button>
+                            <button class="delete">Delete</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Tata Ace Gold</td>
+                        <td>DL-08-GH-3456</td>
+                        <td><span class="badge truck">Truck</span></td>
+                        <td>750 kg</td>
+                        <td>67,200 km</td>
+                        <td>
+                            <button class="edit" onclick="openEditModal(this)">Edit</button>
+                            <button class="delete">Delete</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+<script>
+        
+
+let editMode = false;
+let currentRow = null;
+
+// ===== OPEN ADD MODAL =====
+function openAddModal() {
+    editMode = false;
+    currentRow = null;
+
+    document.getElementById("modalTitle").innerText = "Add New Vehicle";
+    document.getElementById("submitBtn").innerText = "Add Vehicle";
+
+    document.getElementById("vehicleForm").reset();
+    document.getElementById("vehicleModal").style.display = "flex";
+}
+
+// ===== OPEN EDIT MODAL =====
+function openEditModal(button) {
+    editMode = true;
+    currentRow = button.closest("tr");
+
+    document.getElementById("modalTitle").innerText = "Edit Vehicle Details";
+    document.getElementById("submitBtn").innerText = "Save Changes";
+
+    const cells = currentRow.querySelectorAll("td");
+
+    document.getElementById("model").value = cells[0].innerText;
+    document.getElementById("plate").value = cells[1].innerText;
+    document.getElementById("type").value = cells[2].innerText;
+    document.getElementById("capacity").value = cells[3].innerText.replace(" kg", "");
+    document.getElementById("odo").value = cells[4].innerText.replace(" km", "");
+
+    document.getElementById("vehicleModal").style.display = "flex";
+}
+
+// ===== CLOSE MODAL =====
+function closeModal() {
+    document.getElementById("vehicleModal").style.display = "none";
+}
+
+// ===== FORM SUBMIT =====
+document.getElementById("vehicleForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const model = document.getElementById("model").value.trim();
+    const plate = document.getElementById("plate").value.trim();
+    const type = document.getElementById("type").value.trim();
+    const capacity = document.getElementById("capacity").value.trim();
+    const odo = document.getElementById("odo").value.trim();
+
+    // ✅ REQUIRED FIELD VALIDATION
+    if (model === "" || plate === "" || capacity === "" || odo === "") {
+        alert("Please fill all required fields!");
+        return; // 🚫 Stop execution
+    }
+
+    if (editMode && currentRow) {
+        // UPDATE EXISTING ROW
+        const cells = currentRow.querySelectorAll("td");
+        cells[0].innerText = model;
+        cells[1].innerText = plate;
+        cells[2].innerText = type;
+        cells[3].innerText = capacity + " kg";
+        cells[4].innerText = odo + " km";
+    } else {
+        // ADD NEW ROW
+        const tableBody = document.querySelector("tbody");
+
+        const newRow = tableBody.insertRow();
+
+        newRow.innerHTML = `
+            <td>${model}</td>
+            <td>${plate}</td>
+            <td>${type}</td>
+            <td>${capacity} kg</td>
+            <td>${odo} km</td>
+            <td>
+                <button class="edit" onclick="openEditModal(this)">Edit</button>
+                </td>
+                <td>
+                    <button class="delete" >Delete</button>
+                </td>
+        `;
+    }
+
+    closeModal();
+});
+
+</script>
+</body>
+
+
+</html>
