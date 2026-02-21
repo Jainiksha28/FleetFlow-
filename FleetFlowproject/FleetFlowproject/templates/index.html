@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FleetFlow | Login</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{% static 'static/style.css'%}" />
 </head>
 <body>
   <div class="auth-container">
@@ -32,11 +33,11 @@
       <button type="submit">Sign In</button>
 
       <a href="#" class="forgot">Forgot your password?</a>
-      <p class="switch">Don't have an account? <a href="register.html">Register</a></p>
+      <p class="switch">Don't have an account? <a href="{% url 'register' %}">Register</a></p>
       <p id="loginMsg"></p>
     </form>
   </div>
 
-  <script src="script.js"></script>
+  <script src="{static 'static/script.js'}"></script>
 </body>
 </html>
