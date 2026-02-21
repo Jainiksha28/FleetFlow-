@@ -9,6 +9,12 @@ body {
     max-width: 1000px;
     margin: auto;
 }
+:root {
+    --purple: #4f46e5;
+    --muted: #6b7280;
+    --card: #fff;
+    --bg: #f7fbff
+}
 * SIDEBAR */
 .sidebar {
     width: 240px;

@@ -5,20 +5,232 @@
     <meta charset="UTF-8">
     <title>Maintenance & Service Logs</title>
     <link rel="stylesheet" href="{% static 'Maintenanace.css'%}">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+}
+:root {
+    --purple: #4f46e5;
+    --muted: #6b7280;
+    --card: #fff;
+    --bg: #f7fbff
+}
+* SIDEBAR */
+.sidebar {
+    width: 240px;
+    background: var(--card);
+    border-right: 1px solid #eef3ff;
+    padding: 18px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;          /* force left */
+    bottom: 0;
+    margin: 0;        /* remove any unwanted gap */
+    z-index: 1000;
+}
+
+.brand {
+    font-weight: 800;
+    color: var(--purple);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px
+}
+
+.nav {
+    margin-top: 12px
+}
+
+.nav-item {
+    display: block;
+    padding: 12px 14px;
+    color: #374151;
+    text-decoration: none;
+    border-radius: 8px;
+    margin: 6px 6px;
+    cursor: pointer;
+    font-weight: 600
+}
+
+.nav-item:hover {
+    background: #f0f4ff;
+    color: var(--purple)
+}
+
+.nav-item.active {
+    background: #eef2ff;
+    color: #2b39b4;
+    border-left: 4px solid #4338ca;
+    margin-left: 2px
+}
+
+/* sidebar footer */
+.sidebar-footer {
+    padding: 12px;
+    border-top: 1px solid #eef7ff
+}
+
+.user {
+    display: flex;
+    gap: 12px;
+    align-items: center
+}
+
+.avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--purple);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800
+}
+
+.uinfo .name {
+    font-weight: 700
+}
+
+.uinfo .role {
+    font-size: 13px;
+    color: var(--muted)
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-btn {
+    background: #4da3ff;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.controls input {
+    flex: 1;
+    padding: 8px;
+}
+
+.controls button {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.in-shop {
+    background: #ffe0e0;
+    color: red;
+}
+
+.completed {
+    background: #d4edda;
+    color: green;
+}
+
+/* Modal */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background: white;
+    padding: 20px;
+    width: 300px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal input {
+    padding: 8px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.create {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+}
+
+.cancel {
+    border: 1px solid red;
+    color: red;
+    padding: 6px 12px;
+    border-radius: 5px;
+}
+    </style>
 </head>
 <body>
 
 <div class="container">
     <aside class="sidebar">
             <div class="brand">🚛 <span>FleetFlow</span></div>
-            <nav class="nav">
-                <a href="Dashboard.html" class="nav-item" data-target="dashboard">Dashboard</a>
-                <a href="vehicle-registry.html" class="nav-item" data-target="vehicle">Vehicle Registry</a>
-                <a href="Tripmanagement.html" class="nav-item" data-target="trip">Trip Dispatcher</a>
-                <a href="#" class="nav-item active" data-target="maintenance">Maintenance</a>
-                <a href="trip-expense.html" class="nav-item" data-target="expense">Trip & Expense</a>
-                <a href="performance.html" class="nav-item" data-target="performance">Performance</a>
-                <a href="analytics.html" class="nav-item" data-target="analytics">Analytics</a>
+            <nav class="nav"><li><a href="{% url 'Dashboard' %}">📊 Dashboard</a></li>
+      <li><a href="{% url 'Vehicle' %}">🚚 Vehicle Registry</a></li>
+  
+      <li><a href="{% url 'Maintenance' %}">🛠 Maintenance</a></li>
+      <li><a href="{% url 'analytics' %}">📈 Analytics</a></li>
+      <li><a href="{% url 'driver' %}" class="active">👷 Drivers</a></li>
             </nav>
 
             <div class="sidebar-footer">

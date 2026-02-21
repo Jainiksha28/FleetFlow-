@@ -16,13 +16,12 @@
         <aside class="sidebar">
             <div class="brand">🚛 <span>FleetFlow</span></div>
             <nav class="nav">
-                <a href="Dashboard.html" class="nav-item" data-target="dashboard">Dashboard</a>
-                <a href="#" class="nav-item active" data-target="vehicle">Vehicle Registry</a>
-                <a href="trip-dispatcher.html" class="nav-item" data-target="trip">Trip Dispatcher</a>
-                <a href="maintenance.html" class="nav-item" data-target="maintenance">Maintenance</a>
-                <a href="trip-expense.html" class="nav-item" data-target="expense">Trip & Expense</a>
-                <a href="performance.html" class="nav-item" data-target="performance">Performance</a>
-                <a href="analytics.html" class="nav-item" data-target="analytics">Analytics</a>
+                <li><a href="{% url 'Dashboard' %}">📊 Dashboard</a></li>
+      <li><a href="{% url 'Vehicle' %}">🚚 Vehicle Registry</a></li>
+  
+      <li><a href="{% url 'Maintenance' %}">🛠 Maintenance</a></li>
+      <li><a href="{% url 'analytics' %}">📈 Analytics</a></li>
+      <li><a href="{% url 'driver' %}" class="active">👷 Drivers Performance</a></li>
             </nav>
 
             <div class="sidebar-footer">

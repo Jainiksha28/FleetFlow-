@@ -4,7 +4,12 @@
   box-sizing: border-box;
   font-family: 'Inter', sans-serif;
 }
-
+:root {
+    --purple: #4f46e5;
+    --muted: #6b7280;
+    --card: #fff;
+    --bg: #f7fbff
+}
 body {
   background: #f5f7fa;
   padding: 40px;
@@ -17,7 +22,7 @@ body {
 /* SIDEBAR */
 .sidebar {
     width: 240px;
-    background: black;
+    background: var(--card);
     border-right: 1px solid #eef3ff;
     padding: 18px 12px;
     display: flex;
